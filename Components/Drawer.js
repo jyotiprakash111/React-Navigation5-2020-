@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, View } from 'react-native';
+import { Button, View, Text } from 'react-native';
 import {
     createDrawerNavigator, DrawerContentScrollView,
     DrawerItemList
@@ -8,30 +8,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import Demo from './Screen/DemoComp';
 
 
-const CustomDrawerContentComponent = props => (
-    <ScrollView>
-        <View style={styles.container}>
-            <LinearGradient
-                colors={['#f368e0', '#ea0788']}
-                style={{
-                    // flex: 1,
-                    flexDirection: 'row',
-                    height: 200,
-                }}>
-                <Image
-                // style={styles.imgstyle}
-                // source={{ uri: data.profile }}
-                />
-                <View>
-                    <Text style={{ marginTop: 75, color: '#fff', fontSize: 15, fontWeight: '600', marginLeft: 10, }}>
-                        Hello Drawer
-            </Text>
-                </View>
-            </LinearGradient>
-            <DrawerNavigatorItems  {...props} />
-        </View>
-    </ScrollView>
-);
 
 function HomeScreen({ navigation }) {
     return (
@@ -53,20 +29,38 @@ function NotificationsScreen({ navigation }) {
 }
 
 
+function CustomDrawerContent({ progress }) {
+    return (
+        <View style={{ justifyContent: "center", alignItems: "center", height: "20%", backgroundColor: "#280CE8" }}>
+            <View style={{ height: 50, width: 50, borderRadius: 50, borderColor: '#fff', borderWidth: 0.5 }}>
+                <Text style={{ textAlign: 'center', color: "#fff", fontSize: 15 }}>
+                    Custom
+                </Text>
+            </View>
+        </View>
+    );
+}
 
 const Drawer = createDrawerNavigator();
 
-export default function CustomDrawerContent(props) {
+function MyDrawer() {
+    return (
+        <Drawer.Navigator
+            drawerContent={props => <CustomDrawerContent {...props} />}
+        // drawerType='front'
+        // drawerPosition="right"
+        >
+            <Drawer.Screen name="Home" component={HomeScreen} />
+            <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+            <Drawer.Screen name="DemoComp" component={Demo} />
+        </Drawer.Navigator>
+    );
+}
+
+export default function (props) {
     return (
         <NavigationContainer>
-            <Drawer.Navigator initialRouteName="Home">
-                <Drawer.Screen name="Home" component={HomeScreen} />
-                <Drawer.Screen name="Notifications" component={NotificationsScreen} />
-                <Drawer.Screen name="DemoComp" component={Demo} />
-            </Drawer.Navigator>
+            <MyDrawer />
         </NavigationContainer>
-        // <DrawerContentScrollView {...props}>
-        //     <DrawerItemList {...props} />
-        // </DrawerContentScrollView>
     );
 }
