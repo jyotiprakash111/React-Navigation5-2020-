@@ -7,6 +7,11 @@ import {
     createDrawerNavigator, DrawerContentScrollView,
     DrawerItemList
 } from '@react-navigation/drawer';
+import Home from '../Components/Screen/Home';
+import Cart from '../Components/Screen/Cart';
+import Profile from '../Components/Screen/Profile';
+import Gift from '../Components/Screen/Gift';
+import MovieDetails from '../Components/Screen/MovieDetails';
 
 function CustomHeader({ title, isHome, navigation }) {
     return (
@@ -108,7 +113,7 @@ function NotificationsScreen({ navigation }) {
 function CustomDrawerContent(props) {
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <View style={{ height: 155, alignItems: "center", justifyContent: "center" }}>
+            <View style={{ height: 155, alignItems: "center", justifyContent: "center", backgroundColor: "#c1c1c1" }}>
                 <View style={{ borderRadius: 60, borderWidth: 1, borderColor: "#ea0788" }}>
                     <Image source={require('../assets/user.png')}
                         style={{ height: 120, width: 120, borderRadius: 60 }}
@@ -127,6 +132,23 @@ function CustomDrawerContent(props) {
                     <Text>Notifications Tab</Text>
                 </TouchableOpacity>
             </ScrollView>
+            <View style={{
+                height: 40, width: "100%", justifyContent: "center",
+                alignItems: "center",
+                marginBottom: 10
+            }}>
+                <TouchableOpacity
+                    style={{
+                        height: 50,
+                        width: "50%",
+                        backgroundColor: "#ea0788",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: 10
+                    }}>
+                    <Text style={{ color: "#fff", fontSize: 20 }}>Logout</Text>
+                </TouchableOpacity>
+            </View>
         </SafeAreaView>
     )
 }
@@ -151,9 +173,9 @@ const StackSetting = createStackNavigator();
 
 function SettingStack() {
     return (
-        <StackSetting.Navigator initialRouteName="Setting">
-            <StackSetting.Screen name="Setting" component={SettingScreen} options={navigationOptionHandler} />
-            <StackSetting.Screen name="SettingDetail" component={SettingDetail} options={navigationOptionHandler} />
+        <StackSetting.Navigator initialRouteName="Home">
+            <StackSetting.Screen name="Home" component={Home} options={navigationOptionHandler} />
+            <StackSetting.Screen name="Moviedetails" component={MovieDetails} options={navigationOptionHandler} />
         </StackSetting.Navigator>
     )
 }
@@ -169,10 +191,18 @@ function TabNavigator() {
                         iconName = focused
                             ? require('../assets/home.png')
                             : require('../assets/home-black.png');
-                    } else if (route.name === 'Setting') {
+                    } else if (route.name === 'Gift') {
                         iconName = focused ?
-                            require('../assets/gear.png')
-                            : require('../assets/settingsBlack.png');
+                            require('../assets/gift.png')
+                            : require('../assets/gift1.png');
+                    } else if (route.name == 'Cart') {
+                        iconName = focused ?
+                            require('../assets/supermarket.png')
+                            : require('../assets/shopping-cart.png')
+                    } else if (route.name == 'Profile') {
+                        iconName = focused ?
+                            require('../assets/user1.png')
+                            : require('../assets/user2.png')
                     }
 
                     // You can return any component that you like here!
@@ -185,8 +215,10 @@ function TabNavigator() {
                 activeTintColor: 'tomato',
                 inactiveTintColor: 'black',
             }}>
-            <Tabs.Screen name="Home" component={Homestack} />
-            <Tabs.Screen name="Setting" component={SettingStack} />
+            <Tabs.Screen name="Home" component={SettingStack} />
+            <Tabs.Screen name="Gift" component={Gift} />
+            <Tabs.Screen name="Cart" component={Cart} />
+            <Tabs.Screen name="Profile" component={Profile} />
         </Tabs.Navigator>
     )
 }
@@ -197,8 +229,13 @@ const Drawer = createDrawerNavigator();
 export default function App() {
     return (
         <NavigationContainer>
-            <Drawer.Navigator initialRouteName="MenuTab" drawerContent={props => CustomDrawerContent(props)}>
-                <Drawer.Screen name="MenuTab" component={TabNavigator} />
+            <Drawer.Navigator initialRouteName="MenuTab"
+                drawerContent={props => CustomDrawerContent(props)}>
+                <Drawer.Screen
+                    name="MenuTab"
+                    component={TabNavigator}
+                    options={{ drawerLabel: 'Home' }}
+                />
                 <Drawer.Screen name="Notifications" component={NotificationsScreen} />
             </Drawer.Navigator>
         </NavigationContainer>
